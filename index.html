@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #173d69;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #173d69;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Management System</h1>
+    <div class="container">
+        <h2>Add Student</h2>
+        <form id="studentForm">
+            <input id="name" placeholder="Student Name" required>
+            <input id="roll" placeholder="Roll Number" required>
+            <input id="marks" type="number" placeholder="Marks out of 100" min="0" max="100" required>
+            <button type="submit">Add Student</button>
+        </form>
+
+        <h2>Student Records</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Roll Number</th>
+                    <th>Marks</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="records"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let students = [];
+
+        document.getElementById("studentForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let name = document.getElementById("name").value.trim();
+            let roll = document.getElementById("roll").value.trim();
+            let marks = Number(document.getElementById("marks").value);
+
+            if (students.some(s => s.roll === roll)) {
+                alert("Roll number already exists!");
+                return;
+            }
+
+            students.push({name, roll, marks});
+            displayStudents();
+            this.reset();
+        });
+
+        function displayStudents() {
+            let records = document.getElementById("records");
+            records.innerHTML = "";
+
+            students.forEach(function(student, index) {
+                let row = records.insertRow();
+
+                [student.name, student.roll, student.marks].forEach(function(value) {
+                    row.insertCell().textContent = value;
+                });
+
+                let action = row.insertCell();
+                let btn = document.createElement("button");
+                btn.textContent = "Delete";
+                btn.onclick = function() {
+                    students.splice(index, 1);
+                    displayStudents();
+                };
+                action.appendChild(btn);
+            });
+        }
+    </script>
+</body>
+</html>
