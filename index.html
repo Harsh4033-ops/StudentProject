@@ -113,19 +113,31 @@ displayStudents();
                     row.insertCell().textContent = value;
                 });
 
-                let action = row.insertCell();
-                let btn = document.createElement("button");
-                btn.textContent = "Delete";
-                btn.onclick = function() {
-                    students.splice(index, 1);
-                    localStorage.setItem(
-                          "students",
-                          JSON.stringify(students)
-                     );
-                     displayStudents();
-                    
-                };
-                action.appendChild(btn);
+                        let action = row.insertCell();
+
+        let editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.style.backgroundColor = "#28a745";
+        editBtn.style.marginRight = "5px";
+        editBtn.onclick = function() {
+            let newMarks = prompt("Enter new marks:", student.marks);
+            if(newMarks) {
+                students[index].marks = newMarks;
+                localStorage.setItem("students", JSON.stringify(students));
+                displayStudents();
+            }
+        };
+
+        let btn = document.createElement("button");
+        btn.textContent = "Delete";
+        btn.onclick = function() {
+            students.splice(index, 1);
+            localStorage.setItem("students", JSON.stringify(students));
+            displayStudents();
+        };
+
+        action.appendChild(editBtn);
+        action.appendChild(btn);
             });
         }
         displayStudents();
