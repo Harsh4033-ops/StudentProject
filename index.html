@@ -75,7 +75,9 @@
     </div>
 
     <script>
-        let students = [];
+        let students = JSON.parse(
+    localStorage.getItem("students")
+) || [];
 
         document.getElementById("studentForm").addEventListener("submit", function(event) {
             event.preventDefault();
@@ -90,7 +92,13 @@
             }
 
             students.push({name, roll, marks});
-            displayStudents();
+
+localStorage.setItem(
+    "students",
+    JSON.stringify(students)
+);
+
+displayStudents();
             this.reset();
         });
 
@@ -110,11 +118,17 @@
                 btn.textContent = "Delete";
                 btn.onclick = function() {
                     students.splice(index, 1);
-                    displayStudents();
+                    localStorage.setItem(
+                          "students",
+                          JSON.stringify(students)
+                     );
+                     displayStudents();
+                    
                 };
                 action.appendChild(btn);
             });
         }
-    </script>
-</body>
-</html>
+        displayStudents();
+        </script>
+        </body>
+        </html>
